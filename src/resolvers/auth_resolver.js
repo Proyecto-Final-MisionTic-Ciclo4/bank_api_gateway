@@ -38,9 +38,9 @@ const usersResolver = {
             return await dataSources.authAPI.authRequest(credentials)
 
         }, 
-        refreshToken: async(_, { token }, { dataSources }) => 
-            dataSources.authAPI.refreshToken(token)
-        , 
+        refreshToken: async(_, { token }, { dataSources }) => {
+           return await dataSources.authAPI.refreshToken(token);
+        }, 
         userUpdate: async(_, { user }, { dataSources, userIdToken}) => {
             if(user.id == userIdToken)
                 return await dataSources.authAPI.updateUser(user);
