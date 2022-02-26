@@ -36,7 +36,7 @@ class AccountAPI extends RESTDataSource {
         return await this.put('/transactions/update', transaction);
     }
 
-    async deleteTra(transactionId) {
+    async deleteTransaction(transactionId) {
         return await this.delete(`/transactions/delete/${transactionId}`);
     }
 }

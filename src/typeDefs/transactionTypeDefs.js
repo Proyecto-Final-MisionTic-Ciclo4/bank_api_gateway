@@ -6,6 +6,7 @@ const transactionTypeDefs = gql `
         usernameOrigin:String!
         usernameDestiny:String!
         value:Int!
+        note:String!
         date:String!
     }
     
@@ -21,12 +22,12 @@ const transactionTypeDefs = gql `
         note:String!
     }
 
-    extend type Query {
+    type Query {
         transactionByUsername(username:String!):[Transaction]
-        transactionById(transactionId:Int!):Transaction
+        transactionById(transactionId:String!):Transaction
     }
     
-    extend type Mutation {
+    type Mutation {
         createTransaction(transaction:TransactionInput!):Transaction
         updateTransaction(transaction:TransactionUpdate!):Transaction
         deleteTransaction(username:String!):String!

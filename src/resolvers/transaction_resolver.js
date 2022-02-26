@@ -24,8 +24,9 @@ const transactionResolver = {
             if (transaction.usernameOrigin == usernameToken)
                 return  await dataSources.accountAPI.createTransaction(transaction)
             else
-                return null
-        }, updateTransaction: async (_, { transaction }, { dataSources, userIdToken }) => {
+                return null;
+        }, 
+        updateTransaction: async (_, { transaction }, { dataSources, userIdToken }) => {
             usernameToken = (await dataSources.authAPI.getUser(userIdToken)).username
             usernameTransaction = await dataSources.accountAPI.transactionById(transaction.id).usernameOrigin
             if (usernameToken == usernameTransaction)

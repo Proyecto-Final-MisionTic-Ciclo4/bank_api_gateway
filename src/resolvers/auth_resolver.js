@@ -8,6 +8,7 @@ const usersResolver = {
         */
         /** Se pone el parametro que recibe la funcion que se listo en los typeDefs, el dataSource y lo que devuelve esa funcion */
         userDetailById: async(_, { userId }, { dataSources, userIdToken }) => {
+            
             if (userId == userIdToken)
                 /** Si el usuario es el mismo vaya a authAPI y llame la funcion getUser en donde se le pasa el parametro que recive */
                 return await dataSources.authAPI.getUser(userId)
@@ -24,7 +25,6 @@ const usersResolver = {
                 balance: userInput.balance,
                 lastChange: (new Date()).toISOString()
             }
-            await dataSources.accountAPI.createAccount(accountInput);
 
             const authInput = {
                 username: userInput.username,
@@ -32,7 +32,15 @@ const usersResolver = {
                 name: userInput.name,
                 email: userInput.email,
             }
-            return await dataSources.authAPI.createUser(authInput);
+
+            const userResponse = await dataSources.authAPI.createUser(authInput);
+            console.log(userResponse.status);
+            if(userResponse.hasOwnProperty('access') && userResponse.hasOwnProperty('refresh')){
+                console.log("se creo el usuario y se procede a crear la cuenta")
+                await dataSources.accountAPI.createAccount(accountInput);
+            }
+                
+            return userResponse;
         },
         logIn: async(_, { credentials }, { dataSources }) => {
             return await dataSources.authAPI.authRequest(credentials)
@@ -42,20 +50,19 @@ const usersResolver = {
            return await dataSources.authAPI.refreshToken(token);
         }, 
         userUpdate: async(_, { user }, { dataSources, userIdToken}) => {
-            if(user.id == userIdToken)
+            if(user.id == userIdToken){
                 return await dataSources.authAPI.updateUser(user);
-            else
+            } else
                 return null;
 
         }, 
-        deleteUser: async(_, { userId }, { dataSources, userIdToken}) => {
-            if(user.id == userIdToken)
+        deleteUser:async(_, { userId }, { dataSources, userIdToken}) => {
+            if(userId == userIdToken){
                 return await dataSources.authAPI.deleteUser(userId);
-            else 
+            }else 
                 return null;
         }
     }
 }
-
 
 module.exports = usersResolver;

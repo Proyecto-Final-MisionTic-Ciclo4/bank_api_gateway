@@ -11,6 +11,10 @@ const authTypeDefs = gql `
         access:String!
     }
 
+    input Refresh {
+        refresh:String!
+    }
+
     input CredentialsInput {
         username:String!
         password:String!
@@ -34,20 +38,22 @@ const authTypeDefs = gql `
 
     input UserUpdate {
         id:Int!
+        username:String!
         password:String!
         name:String!
-    }
-    
-    type Mutation {
-        signUpUser(userInput:SignUpInput):Token!
-        logIn(credentials:CredentialsInput!):Token!
-        refreshToken(refresh:String!):Access!
-        userUpdate(user:UserUpdate!):UserDetail!
-        deleteUser(userId:String):String!
+        email:String!
     }
 
     type Query {
         userDetailById(userId:Int!):UserDetail!
+    }
+    
+    type Mutation {
+        signUpUser(userInput:SignUpInput!):Token!
+        logIn(credentials:CredentialsInput!):Token!
+        refreshToken(token:Refresh!):Access!
+        userUpdate(user:UserUpdate!):UserDetail!
+        deleteUser(userId:Int!):String
     }
 `;
 
